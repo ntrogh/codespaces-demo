@@ -12,9 +12,6 @@
       "route": "/api/catalog"
     },
     {
-      "route": "/api/recommendations"
-    },
-    {
       "route": "/api/*",
       "allowedRoles": ["authenticated"]
     },

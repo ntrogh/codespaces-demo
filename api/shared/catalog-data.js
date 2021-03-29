@@ -1,14 +1,10 @@
-const { sqlConfig } = require("./config");
-const mssql = require('mssql');
+const fs = require('fs').promises;
 
 async function getCatalog() {
-  console.log('using database ');
-
-  let pool = await mssql.connect(sqlConfig);
-  let result = await pool.request()
-    .query(`SELECT * FROM dbo.Icecreams ORDER BY [Id]`);
-
-  return result.recordset;
+  console.log('using static data.');
+  var stringData = await fs.readFile('./shared/catalog.json', 'utf8');
+  const data = JSON.parse(stringData);
+  return data.icecreams;
 }
 
 module.exports = { getCatalog };

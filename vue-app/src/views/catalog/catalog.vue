@@ -23,16 +23,14 @@ export default {
     Modal,
   },
   async created() {
-    await this.getData();
+    await this.getCatalog();
   },
   computed: {
     ...mapGetters('catalog', { catalog: 'catalog' }),
-    ...mapGetters('recommendations', { recommendations: 'recommendations' }),
   },
   methods: {
     ...mapActions('icecreams', ['buyIcecreamAction']),
     ...mapActions('catalog', ['getCatalogAction']),
-    ...mapActions('recommendations', ['getRecommendationsAction']),
     askToBuy(icecream) {
       this.icecreamToBuy = icecream;
       this.showModal = true;
@@ -53,22 +51,10 @@ export default {
         this.buyIcecreamAction(this.icecreamToBuy);
       }
     },
-    async getData() {
-      await this.getCatalog();
-      await this.getRecommendations();
-    },
     async getCatalog() {
       this.errorMessage = undefined;
       try {
         await this.getCatalogAction();
-      } catch (error) {
-        this.errorMessage = 'Unauthorized';
-      }
-    },
-    async getRecommendations() {
-      this.errorMessage = undefined;
-      try {
-        await this.getRecommendationsAction();
       } catch (error) {
         this.errorMessage = 'Unauthorized';
       }
@@ -79,17 +65,6 @@ export default {
 
 <template>
   <div class="content-container">
-    <ListHeader title="Our Favorite" @refresh="getRecommendations" :routePath="routePath">
-    </ListHeader>
-    <div class="columns is-multiline is-variable">
-      <div class="column" v-if="recommendations">
-        <CatalogList
-          :icecreams="recommendations"
-          :errorMessage="errorMessage"
-          @bought="askToBuy($event)"
-        ></CatalogList>
-      </div>
-    </div>
     <ListHeader :title="title" @refresh="getCatalog" :routePath="routePath">
     </ListHeader>
     <div class="columns is-multiline is-variable">

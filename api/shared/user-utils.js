@@ -6,7 +6,7 @@ const getUser = (req) => {
 
         return JSON.parse(decoded);
     } else {
-        return { userDetails: "anonymous" };
+        return { userDetails: "John Doe" };
     }
 };
 
